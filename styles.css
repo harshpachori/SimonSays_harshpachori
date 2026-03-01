@@ -68,6 +68,73 @@ h1::after {
   margin-bottom: 10px;
 }
 
+/* NEW - Level selector wrapper */
+.level-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+/* NEW - "Pick your level!" label */
+.level-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 24px;
+  color: #ff6fb0;
+  text-shadow: 2px 2px 0px #ffb347;
+  letter-spacing: 1px;
+}
+
+/* NEW - Dropdown select */
+.level-select {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  color: #7c5cbf;
+  background-color: #fff8ff;
+  border: 4px solid #ff6fb0;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow:
+    0 6px 0px #c94d85,
+    0 10px 20px rgba(0,0,0,0.1);
+  transition: all 0.15s ease;
+  /* Custom dropdown arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff6fb0' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 44px;
+}
+
+.level-select:hover {
+  border-color: #ffb347;
+  box-shadow:
+    0 6px 0px #c49a00,
+    0 10px 20px rgba(0,0,0,0.15);
+  transform: scale(1.03);
+}
+
+.level-select:focus {
+  outline: none;
+  border-color: #7c5cbf;
+  box-shadow:
+    0 6px 0px #5a3a9a,
+    0 10px 20px rgba(124,92,191,0.2);
+}
+
+.level-select option {
+  font-size: 18px;
+  color: #7c5cbf;
+  background-color: #fff8ff;
+  padding: 8px;
+}
+
 .start-button {
   display: inline-block;
   padding: 18px 50px;
