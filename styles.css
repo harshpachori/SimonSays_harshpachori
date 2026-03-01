@@ -1,137 +1,229 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik+Microbe&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
 html {
-  background: url('../assets/background.png') no-repeat center center fixed;
   box-sizing: border-box;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  background: linear-gradient(135deg, #a8edea, #fed6e3, #ffecd2, #d4fc79);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
   overflow: hidden;
 }
 
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 body {
-  color: yellow;
-  font-family: 'Rubik Microbe', sans-serif;
+  font-family: 'Fredoka One', cursive;
   display: flex;
   justify-content: center;
   height: 100vh;
   align-items: center;
+  margin: 0;
 }
 
 main {
-  background-color: #000;
-  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 40px 50px;
+  border-radius: 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  border: 6px solid #fff;
 }
 
 h1 {
   text-align: center;
+  font-size: 52px;
+  color: #ff6fb0;
+  text-shadow:
+    3px 3px 0px #ffb347,
+    6px 6px 0px rgba(0,0,0,0.1);
+  margin: 0 0 16px 0;
+  letter-spacing: 2px;
+}
+
+/* Bouncing stars around title */
+h1::before {
+  content: "⭐ ";
   font-size: 40px;
+  animation: bounce 1s infinite alternate;
+  display: inline-block;
+}
+
+h1::after {
+  content: " ⭐";
+  font-size: 40px;
+  animation: bounce 1s infinite alternate-reverse;
+  display: inline-block;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0px); }
+  to   { transform: translateY(-10px); }
 }
 
 .game-controls {
   text-align: center;
+  margin-bottom: 10px;
 }
 
 .start-button {
   display: inline-block;
-  height: 38px;
-  padding: 0 30px;
-  color: yellow;
+  padding: 18px 50px;
+  color: #fff;
   text-align: center;
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  background-color: transparent;
-  border: 1px solid yellow;
+  font-family: 'Fredoka One', cursive;
+  font-size: 28px;
+  letter-spacing: 1px;
+  background: linear-gradient(145deg, #ff6fb0, #ff9a5c);
+  border: none;
+  border-radius: 50px;
   cursor: pointer;
+  box-shadow:
+    0 8px 0px #c94d85,
+    0 12px 20px rgba(0,0,0,0.2);
+  transition: all 0.1s ease;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 .start-button:hover {
-  color: greenyellow;
-  font-size: 18px;
-  border-color: greenyellow;
-  transform: rotate(5deg);
+  background: linear-gradient(145deg, #ff85c2, #ffb07a);
+  box-shadow:
+    0 8px 0px #c94d85,
+    0 12px 20px rgba(0,0,0,0.2);
+}
+
+.start-button:active {
+  transform: translateY(5px);
+  box-shadow:
+    0 3px 0px #c94d85,
+    0 6px 10px rgba(0,0,0,0.2);
 }
 
 .status {
-  font-size: 22px;
+  font-size: 26px;
+  color: #7c5cbf;
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  min-height: 36px;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .pad-container {
   display: grid;
-  grid-template-rows: 200px 200px;
-  grid-template-columns: 200px 200px;
-  grid-gap: 5px;
-  margin: 20px;
+  grid-template-rows: 180px 180px;
+  grid-template-columns: 180px 180px;
+  grid-gap: 12px;
+  margin: 24px auto 0;
+  width: fit-content;
 }
 
+/* Shared pad styles */
+.pad {
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
+  box-shadow: 0 8px 0px rgba(0,0,0,0.25);
+  position: relative;
+}
+
+.pad:hover {
+  filter: brightness(1.15);
+  transform: scale(1.06);
+  box-shadow: 0 12px 0px rgba(0,0,0,0.2);
+}
+
+.pad:active {
+  transform: translateY(6px) scale(0.97);
+  box-shadow: 0 2px 0px rgba(0,0,0,0.25);
+}
+
+/* RED pad - top left */
 .pad-red {
-  border-top-left-radius: 200px;
-  background-color: red;
+  border-radius: 50% 20% 20% 20%;
+  background: radial-gradient(circle at 35% 35%, #ff7070, #e8000d);
+  box-shadow: 0 8px 0px #9e0009, 0 10px 20px rgba(232,0,13,0.3);
 }
 
-.pad-red:hover,
-.pad-red:focus {
-  background-color: #ff451a;
-  transform: rotate(-5deg);
+.pad-red:hover {
+  box-shadow: 0 12px 0px #9e0009, 0 14px 25px rgba(232,0,13,0.4);
 }
 
 .pad-red:active,
 .pad-red.activated {
-  background-color: #ff5c36;
-  transform: translateY(10px);
+  background: radial-gradient(circle at 35% 35%, #ffaaaa, #ff3344);
+  filter: brightness(1.4);
+  box-shadow: 0 2px 0px #9e0009, 0 0px 30px rgba(255,50,50,0.8);
+  transform: translateY(6px) scale(0.97);
 }
 
+/* GREEN pad - top right */
 .pad-green {
-  border-top-right-radius: 200px;
-  background-color: green;
+  border-radius: 20% 50% 20% 20%;
+  background: radial-gradient(circle at 65% 35%, #80e86e, #1db800);
+  box-shadow: 0 8px 0px #127a00, 0 10px 20px rgba(29,184,0,0.3);
 }
 
-.pad-green:hover,
-.pad-green:focus {
-  background-color: #8cc218;
-  transform: rotate(5deg);
+.pad-green:hover {
+  box-shadow: 0 12px 0px #127a00, 0 14px 25px rgba(29,184,0,0.4);
 }
 
 .pad-green:active,
 .pad-green.activated {
-  background-color: #a0ea00;
-  transform: translateY(10px);
+  background: radial-gradient(circle at 65% 35%, #b8ffaa, #4dff2a);
+  filter: brightness(1.4);
+  box-shadow: 0 2px 0px #127a00, 0 0px 30px rgba(77,255,42,0.8);
+  transform: translateY(6px) scale(0.97);
 }
 
-.pad-yellow {
-  border-bottom-right-radius: 200px;
-  background-color: yellow;
-}
-
-.pad-yellow:hover,
-.pad-yellow:focus {
-  background-color: #ffb900;
-  transform: rotate(5deg);
-}
-
-.pad-yellow:active,
-.pad-yellow.activated {
-  background-color: #ffca3d;
-  transform: translateY(10px);
-}
-
+/* BLUE pad - bottom left */
 .pad-blue {
-  border-bottom-left-radius: 200px;
-  background-color: blue;
+  border-radius: 20% 20% 20% 50%;
+  background: radial-gradient(circle at 35% 65%, #6ab0ff, #0066ff);
+  box-shadow: 0 8px 0px #0044bb, 0 10px 20px rgba(0,102,255,0.3);
 }
 
-.pad-blue:hover,
-.pad-blue:focus {
-  background-color: #139ddd;
-  transform: rotate(5deg);
+.pad-blue:hover {
+  box-shadow: 0 12px 0px #0044bb, 0 14px 25px rgba(0,102,255,0.4);
 }
 
 .pad-blue:active,
 .pad-blue.activated {
-  background-color: #2bbcff;
-  transform: translateY(10px);
+  background: radial-gradient(circle at 35% 65%, #aad4ff, #44aaff);
+  filter: brightness(1.4);
+  box-shadow: 0 2px 0px #0044bb, 0 0px 30px rgba(68,170,255,0.8);
+  transform: translateY(6px) scale(0.97);
+}
+
+/* YELLOW pad - bottom right */
+.pad-yellow {
+  border-radius: 20% 20% 50% 20%;
+  background: radial-gradient(circle at 65% 65%, #ffe566, #ffcc00);
+  box-shadow: 0 8px 0px #c49a00, 0 10px 20px rgba(255,204,0,0.3);
+}
+
+.pad-yellow:hover {
+  box-shadow: 0 12px 0px #c49a00, 0 14px 25px rgba(255,204,0,0.4);
+}
+
+.pad-yellow:active,
+.pad-yellow.activated {
+  background: radial-gradient(circle at 65% 65%, #fffaaa, #ffe44d);
+  filter: brightness(1.4);
+  box-shadow: 0 2px 0px #c49a00, 0 0px 30px rgba(255,228,77,0.8);
+  transform: translateY(6px) scale(0.97);
 }
 
 .hidden {
