@@ -6,7 +6,7 @@ const startButton = document.querySelector(".js-start-button");
 const statusSpan = document.querySelector(".js-status");
 const heading = document.querySelector(".js-heading");
 const padContainer = document.querySelector(".js-pad-container");
-const levelSelect = document.querySelector(".js-level-select"); // NEW
+const levelSelect = document.querySelector(".js-level-select");
 
 /**
  * VARIABLES
@@ -20,22 +20,30 @@ const pads = [
   {
     color: "red",
     selector: document.querySelector(".js-pad-red"),
-    sound: new Audio("../assets/simon-says-sound-1.mp3"),
+    sound: new Audio(
+      "https://github.com/kchia/simon-says-sounds/blob/main/simon-says-sound-1.mp3?raw=true"
+    ),
   },
   {
     color: "green",
     selector: document.querySelector(".js-pad-green"),
-    sound: new Audio("../assets/simon-says-sound-2.mp3"),
+    sound: new Audio(
+      "https://github.com/kchia/simon-says-sounds/blob/main/simon-says-sound-2.mp3?raw=true"
+    ),
   },
   {
     color: "blue",
     selector: document.querySelector(".js-pad-blue"),
-    sound: new Audio("../assets/simon-says-sound-3.mp3"),
+    sound: new Audio(
+      "https://github.com/kchia/simon-says-sounds/blob/main/simon-says-sound-3.mp3?raw=true"
+    ),
   },
   {
     color: "yellow",
     selector: document.querySelector(".js-pad-yellow"),
-    sound: new Audio("../assets/simon-says-sound-4.mp3"),
+    sound: new Audio(
+      "https://github.com/kchia/simon-says-sounds/blob/main/simon-says-sound-4.mp3?raw=true"
+    ),
   },
 ];
 
@@ -52,18 +60,20 @@ startButton.addEventListener("click", startButtonHandler);
 
 /**
  * Called when the start button is clicked.
- * 1. Reads the selected level from the dropdown and passes it to setLevel()
+ * 1. setLevel() is called to set the level of the game
  * 2. Increments roundCount from 0 to 1
- * 3. Hides the start button and level selector
+ * 3. Hides the start button
  * 4. Unhides the status element
- * 5. Calls playComputerTurn() to start the game
+ * 5. playComputerTurn() is called to start the game
  */
 function startButtonHandler() {
-  const selectedLevel = parseInt(levelSelect.value); // NEW - read dropdown value
-  maxRoundCount = setLevel(selectedLevel);            // NEW - pass level to setLevel()
+  // setLevel() sets the number of rounds based on difficulty
+  // playComputerTurn() starts the computer's first turn
+  const selectedLevel = levelSelect ? parseInt(levelSelect.value) : 1;
+  maxRoundCount = setLevel(selectedLevel);
   roundCount = 1;
   startButton.classList.add("hidden");
-  levelSelect.classList.add("hidden");               // NEW - hide dropdown during game
+  if (levelSelect) levelSelect.classList.add("hidden");
   statusSpan.classList.remove("hidden");
   playComputerTurn();
 
@@ -207,8 +217,8 @@ function checkPress(color) {
 
 /**
  * Checks the round results.
- * 1. If playerSequence length matches maxRoundCount, player wins — resets with success message
- * 2. Otherwise, increments roundCount, resets playerSequence, and starts computer's next turn
+ * 1. If playerSequence length matches maxRoundCount, player wins
+ * 2. Otherwise increments roundCount, resets playerSequence, calls playComputerTurn()
  */
 function checkRound() {
   if (playerSequence.length === maxRoundCount) {
@@ -226,7 +236,6 @@ function checkRound() {
  * 1. Resets computerSequence
  * 2. Resets playerSequence
  * 3. Resets roundCount
- * 4. Shows the level selector again
  */
 function resetGame(text) {
   computerSequence = [];
@@ -236,7 +245,7 @@ function resetGame(text) {
   alert(text);
   setText(heading, "Simon Says");
   startButton.classList.remove("hidden");
-  levelSelect.classList.remove("hidden");            // NEW - show dropdown again on reset
+  if (levelSelect) levelSelect.classList.remove("hidden");
   statusSpan.classList.add("hidden");
   padContainer.classList.add("unclickable");
 }
