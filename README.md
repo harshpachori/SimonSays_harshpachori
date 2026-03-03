@@ -2,123 +2,234 @@
 
 A web-based implementation of the classic Simon Says memory game, built with vanilla HTML, CSS, and JavaScript. Designed to be fun, colorful, and accessible for kids under 10 years old.
 
+**Live Demo:** [Play the game here](https://YOUR-USERNAME.github.io/YOUR-REPO-NAME)
+
+---
+
+## 📋 Table of Contents
+
+- [The Game](#the-game)
+- [Setup & Installation](#setup--installation)
+- [How to Play](#how-to-play)
+- [Running the Tests](#running-the-tests)
+- [User Story Mapping](#user-story-mapping)
+- [Project Plan](#project-plan)
+- [Implementation Plan](#implementation-plan)
+- [Coding Trade-offs](#coding-trade-offs)
+- [Challenges & Debugging](#challenges--debugging)
+- [AI Tools Used](#ai-tools-used)
+- [Project Summary](#project-summary)
+
 ---
 
 ## 🕹️ The Game
 
 **Simon Says** is a memory game where the computer generates a random sequence of colored pad presses, and the player must repeat the sequence from memory. Each round adds one more color to the sequence. The game ends when the player makes a mistake — or wins by completing all rounds at the chosen difficulty level.
 
-**Live Demo:** [Play the game here](https://harshpachori.github.io/SimonSays_harshpachori/)
+---
+
+## ⚙️ Setup & Installation
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v14 or higher)
+- A modern web browser (Chrome, Firefox, Safari, Edge)
+- [VS Code](https://code.visualstudio.com/) with the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+
+### Steps
+
+**1. Clone the repository**
+```bash
+git clone https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git
+cd YOUR-REPO-NAME
+```
+
+**2. Install dependencies**
+```bash
+npm install
+```
+
+**3. Run the game locally**
+- Open the project folder in VS Code
+- Right-click `index.html`
+- Select **"Open with Live Server"**
+- The game opens in your browser at `http://127.0.0.1:5500`
+
+### Project Structure
+```
+your-repo/
+├── index.html            ← Main HTML file
+├── README.md             ← This file
+├── assets/
+│   ├── simon-says-sound-1.mp3
+│   ├── simon-says-sound-2.mp3
+│   ├── simon-says-sound-3.mp3
+│   └── simon-says-sound-4.mp3
+└── src/
+    ├── index.js          ← Game logic
+    └── styles.css        ← Styling
+```
+
+---
+
+## 🎯 How to Play
+
+1. Open the game in your browser
+2. Select a difficulty level from the dropdown:
+   - ⭐ Level 1 — Easy (8 rounds)
+   - ⭐⭐ Level 2 — Medium (14 rounds)
+   - ⭐⭐⭐ Level 3 — Hard (20 rounds)
+   - ⭐⭐⭐⭐ Level 4 — Expert (31 rounds)
+3. Click the **Start** button
+4. Watch the computer light up a sequence of colored pads
+5. Repeat the sequence by clicking the pads in the same order
+6. Each round adds one more pad to the sequence
+7. Make a mistake and the game resets — complete all rounds to win!
+
+---
+
+## 🧪 Running the Tests
+
+Tests are split by user story. Run them from the project root:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests for a specific user story
+npm run test:1    # US-01: Basic Game Structure
+npm run test:2    # US-02: Initialize Game
+npm run test:3    # US-03: Play Computer's Turn
+npm run test:4    # US-04: Play Player's Turn
+npm run test:5    # US-05: Reset Game
+```
+
+### What the tests check
+- `test:1` — Verifies the HTML has an h1 with `js-heading`, a start button with `js-start-button`, four pad divs, and all query selectors are defined
+- `test:2` — Verifies `setLevel()` returns correct round counts and `startButtonHandler()` correctly initializes game state
+- `test:3` — Verifies `getRandomItem()`, `setText()`, `activatePad()`, `activatePads()`, and `playComputerTurn()` behave as specified
+- `test:4` — Verifies `playHumanTurn()`, `padHandler()`, `checkPress()`, and `checkRound()` handle player interaction correctly
+- `test:5` — Verifies `resetGame()` clears all state and restores the UI
+
+---
+
+## ✅ User Story Mapping
+
+### US-01: Basic Game Structure
+| Acceptance Criteria | Implementation | Status |
+|---|---|---|
+| `h1` tag with `js-heading` class | `<h1 class="js-heading">Simon Says</h1>` in `index.html` | ✅ |
+| Four pad divs with correct classes and `data-color` | Four `<div>` elements with `js-pad-red/green/blue/yellow` and `data-color` attributes | ✅ |
+| Start button with `js-start-button` class | `<button class="start-button js-start-button">` in `index.html` | ✅ |
+| Query selectors for status, heading, pad container | `statusSpan`, `heading`, `padContainer` defined via `querySelector()` in `index.js` | ✅ |
+| `pads` array with four pad objects | Four objects in `pads[]` with `color`, `selector`, and `sound` properties | ✅ |
+
+### US-02: Initialize Game
+| Acceptance Criteria | Implementation | Status |
+|---|---|---|
+| `setLevel()` returns correct round counts | Returns 8/14/20/31 for levels 1–4, error string otherwise | ✅ |
+| `startButtonHandler()` initializes game correctly | Reads level selector, sets `maxRoundCount`, increments `roundCount`, hides/shows UI, calls `playComputerTurn()` | ✅ |
+| `startButtonHandler()` attached as event listener | `startButton.addEventListener("click", startButtonHandler)` | ✅ |
+
+### US-03: Play Computer's Turn
+| Acceptance Criteria | Implementation | Status |
+|---|---|---|
+| `getRandomItem()` returns random array element | Uses `Math.random()` and `Math.floor()` to return random item | ✅ |
+| `setText()` updates element text content | Sets `element.textContent = text` | ✅ |
+| `activatePad()` lights up pad and plays sound | Adds `activated` class, plays sound, removes class after 500ms | ✅ |
+| `activatePads()` activates sequence with delays | Uses `forEach` with `setTimeout` at 600ms intervals | ✅ |
+| `playComputerTurn()` runs computer turn | Adds random color to `computerSequence`, calls `activatePads()`, schedules `playHumanTurn()` | ✅ |
+
+### US-04: Play Player's Turn
+| Acceptance Criteria | Implementation | Status |
+|---|---|---|
+| `playHumanTurn()` enables pad clicks | Removes `unclickable` class, updates status with remaining presses | ✅ |
+| `padHandler()` handles pad clicks | Finds pad by color, plays sound, calls `checkPress()` | ✅ |
+| `checkPress()` validates player press | Compares press to computer sequence at same index, calls `resetGame()` on mismatch | ✅ |
+| `checkRound()` advances or ends game | Calls `resetGame()` on win, increments `roundCount` and calls `playComputerTurn()` otherwise | ✅ |
+
+### US-05: Reset Game
+| Acceptance Criteria | Implementation | Status |
+|---|---|---|
+| `resetGame()` resets all state and UI | Clears sequences and `roundCount`; restores heading, start button, level selector; hides status | ✅ |
+
+### US-06: Originality & Creativity
+| Feature | Implementation |
+|---|---|
+| Kid-friendly visual theme | Animated pastel gradient background, `Fredoka One` font, large 180×180px pads |
+| Per-pad glow animations | CSS `radial-gradient` and colored `box-shadow` on `.activated` class |
+| Bouncing star title animation | CSS `@keyframes bounce` on `h1::before` and `h1::after` pseudo-elements |
+| Pulsing start button | CSS `@keyframes pulse` animation on `.start-button` |
+| Difficulty level selector | Dropdown wired to `setLevel()` via `parseInt(levelSelect.value)` |
+
+### US-07: Deployment
+| Acceptance Criteria | Status |
+|---|---|
+| Game deployed to GitHub Pages | ✅ Live at the link above |
 
 ---
 
 ## 📐 Project Plan
 
-### Functions & Features
+### Functions & Algorithms
 
-The game is broken into modular, single-responsibility functions:
+**Sequence Validation** — `checkPress()` uses index-based comparison. Each player press is pushed to `playerSequence`, and its index is used to compare against the same position in `computerSequence`. A mismatch at any index immediately ends the game.
 
-| Function | Purpose |
-|---|---|
-| `setLevel(level)` | Returns the number of rounds for a given difficulty (1–4) |
-| `startButtonHandler()` | Initializes the game on Start button click |
-| `getRandomItem(collection)` | Returns a random element from an array |
-| `setText(element, text)` | Updates the text content of a DOM element |
-| `activatePad(color)` | Lights up and plays the sound for a single pad |
-| `activatePads(sequence)` | Iterates the sequence with timed delays between each pad |
-| `playComputerTurn()` | Runs the computer's turn — adds a color and plays the sequence |
-| `playHumanTurn()` | Enables player interaction and shows remaining presses |
-| `padHandler(event)` | Handles player pad clicks via event delegation |
-| `checkPress(color)` | Validates each player press against the computer sequence |
-| `checkRound()` | Determines if the player advances, wins, or loses |
-| `resetGame(text)` | Resets all state and UI to the starting configuration |
+**Timed Sequence Playback** — `activatePads()` uses `setTimeout()` with a multiplied delay `(index + 1) * 600ms` so each pad activates sequentially. The human turn triggers after `roundCount * 600 + 1000ms` to ensure the full sequence finishes before the player can interact.
 
-### Key Features
+**Level System** — `setLevel()` uses `if` conditionals for readability and easy isolated testing.
 
-- Four colored interactive pads with unique sounds
-- Animated pad activation with glow effects
-- Difficulty selector (Level 1–4) with varying round counts
-- Real-time status messages guiding the player
-- Responsive reset on win or loss
-- Kid-friendly visual design with pastel animated background, large touch targets, and playful fonts
-
-### Algorithms & Logic
-
-**Sequence Validation** — `checkPress()` uses index-based comparison. Each player press is pushed to `playerSequence`, and its index is used to compare against the same position in `computerSequence`. A mismatch at any index immediately ends the game, preventing the player from continuing on a wrong sequence.
-
-**Timed Sequence Playback** — `activatePads()` uses `setTimeout()` with a multiplied delay `(index + 1) * 600ms` so each pad activates one after another rather than simultaneously. The human turn is triggered after `roundCount * 600 + 1000ms` to ensure the full computer sequence finishes before the player can click.
-
-**Level System** — `setLevel()` uses simple conditional returns rather than a lookup object or switch statement, keeping it readable and easy to test in isolation.
+**Event Delegation** — A single listener on `padContainer` handles all four pad clicks via `event.target.dataset.color`, keeping the code DRY.
 
 ---
 
 ## 🛠️ Implementation Plan
 
-The project was implemented in order of the user stories, which naturally built on each other:
+The project was implemented in user story order, each building on the last:
 
-1. **HTML Structure (US-01)** — Built the skeleton first: heading, start button, status span, and four pad divs with `data-color` attributes for event delegation. Added `js-` prefixed classes to separate styling concerns from JavaScript targeting.
-
-2. **Game Initialization (US-02)** — Wired up `startButtonHandler()` to read the level selector, set `maxRoundCount`, hide the UI controls, and kick off the computer's first turn.
-
-3. **Computer Turn (US-03)** — Implemented the sequence builder using `getRandomItem()` to randomly select from the `pads` array, then used `activatePads()` with `setTimeout` to animate each pad in order with proper delays.
-
-4. **Player Turn (US-04)** — Used event delegation on `padContainer` (one listener instead of four) so `padHandler()` catches all pad clicks. `checkPress()` validates each press and `checkRound()` handles end-of-round logic.
-
-5. **Reset Logic (US-05)** — `resetGame()` clears all state arrays, resets the round counter, and restores the UI to its pre-game state so the player can immediately start again.
-
-6. **Originality (US-06)** — Applied a full kid-friendly CSS redesign using animated gradients, `Fredoka One` font, 3D button effects, per-pad glow animations, and added a difficulty level dropdown wired to `setLevel()`.
-
-7. **Deployment (US-07)** — Deployed via GitHub Pages from the `main` branch root.
+1. **US-01** — Built HTML skeleton with heading, button, status span, and four pad divs using `js-` prefixed classes to separate styling from JS targeting
+2. **US-02** — Wired `startButtonHandler()` to read the level dropdown, set `maxRoundCount`, hide controls, and kick off the computer's first turn
+3. **US-03** — Built sequence playback using `getRandomItem()` and `activatePads()` with staggered `setTimeout` delays
+4. **US-04** — Added event delegation on `padContainer`; `checkPress()` validates each press and `checkRound()` handles end-of-round logic
+5. **US-05** — `resetGame()` clears all state arrays and restores full UI to pre-game state
+6. **US-06** — Applied kid-friendly CSS redesign and wired difficulty dropdown to `setLevel()`
+7. **US-07** — Deployed via GitHub Pages from `main` branch root
 
 ---
 
 ## ⚖️ Coding Trade-offs
 
-### Event Delegation vs. Individual Listeners
-Rather than attaching four separate click listeners (one per pad), a single listener was placed on the `padContainer`. This is more efficient and keeps the code DRY — the `padHandler` reads `event.target.dataset.color` to identify which pad was clicked. The trade-off is a small added complexity in filtering out clicks on the container itself (`if (!color) return`), but this is minimal.
+**Event Delegation vs. Individual Listeners** — One listener on `padContainer` instead of four. More efficient and DRY, with a small trade-off of needing to filter out container clicks with `if (!color) return`.
 
-### `const` vs. `let` for Sequences
-`computerSequence` and `playerSequence` are declared with `let` even though they start as arrays, because `resetGame()` reassigns them to fresh empty arrays (`[] `) rather than mutating in place with `.length = 0`. Reassignment is cleaner and less error-prone than mutation in this context, but it does mean the `window` references at the bottom of the file point to the original arrays and won't reflect resets — an acceptable trade-off since those references are only for testing purposes.
+**`let` for Sequences** — `computerSequence` and `playerSequence` use `let` so `resetGame()` can reassign to fresh empty arrays rather than mutating in place. Cleaner reset logic at the cost of `window` test references not reflecting post-reset state.
 
-### `setLevel()` Conditionals vs. Lookup Table
-`setLevel()` uses `if` statements rather than an object lookup `{ 1: 8, 2: 14 }[level]`. The conditionals are slightly more verbose but are easier for beginners to read and debug, which aligns with the educational nature of this project.
-
-### CSS Animations vs. JavaScript Animations
-All animations (gradient shift, bounce, pulse, pad glow) are handled entirely in CSS rather than JavaScript. This keeps the JS focused purely on game logic and leverages the browser's optimized rendering pipeline for smoother animations.
+**CSS Animations vs. JS Animations** — All animations handled in CSS to keep JS focused on game logic and leverage the browser's optimized rendering pipeline for smoother performance.
 
 ---
 
-## 💬 Justification, Challenges & Debugging
+## 🔧 Challenges & Debugging
 
-### Design Justifications
-The toddler-friendly design was chosen deliberately: large pad targets (180×180px) accommodate small, imprecise fingers. High-contrast glowing activated states make it immediately obvious which pad lit up. The `Fredoka One` rounded font is legible for early readers. The animated pastel gradient avoids static or harsh backgrounds that might distract young players.
+**1. Timing the Human Turn** — Calculating when to call `playHumanTurn()` required `roundCount * 600 + 1000ms`. Too short and players could click mid-animation; too long and the game felt sluggish.
 
-### Challenges
+**2. String vs. Integer Type Mismatch** — The `select` dropdown returns its value as a string (`"1"`), but `setLevel()` uses strict equality against integers. Fixed with `parseInt(levelSelect.value)`.
 
-**1. Timing the Human Turn**
-The trickiest logic was calculating when to call `playHumanTurn()` after the computer sequence finishes. The delay needed to account for the full sequence length: `roundCount * 600 + 1000ms`. Too short and the player could click before the last pad finished animating; too long and the game felt sluggish.
+**3. Duplicate `index.js` Files** — Two `index.js` files existed (root and `src/`). The browser loaded the root version which had uninitialized `const` declarations, causing `SyntaxError: Missing initializer in const declaration`. Fixed by deleting the root file.
 
-**2. `setLevel()` Passing Integer vs. String**
-The dropdown `select` element returns its value as a **string** (`"1"`, `"2"`, etc.), but `setLevel()` uses strict equality (`===`) comparing against integers. This caused `setLevel()` to always return the error message. Fixed by parsing the value: `parseInt(levelSelect.value)` before passing it to `setLevel()`.
-
-**3. Wrong `index.js` Being Loaded**
-During development, there were two `index.js` files — one in the root and one in `src/`. The browser was loading the root version (which still had uninitialized `const` declarations), causing a `SyntaxError: Missing initializer in const declaration` on line 7. Resolved by deleting the root `index.js` and ensuring `index.html` correctly references `./src/index.js`.
-
-**4. GitHub Pages Cache**
-After pushing fixes, the browser continued serving the cached broken file. Resolved using hard refresh (`Ctrl+Shift+R`) and testing in an incognito window to bypass cache entirely.
+**4. GitHub Pages Cache** — After pushing fixes, the browser continued serving a cached broken file. Resolved with hard refresh (`Ctrl+Shift+R`) and testing in an incognito window.
 
 ---
 
 ## 🤖 AI Tools Used
 
-| Tool | How It Was Used | Justification |
-|---|---|---|
-| **Claude (Anthropic)** | Code implementation guidance, CSS design, debugging support, README writing | Used as a pair-programming assistant to work through user stories systematically, catch bugs (wrong file path, string vs. integer type mismatch), and produce a cohesive kid-friendly design. All logic was reviewed and understood before being applied — AI supplemented rather than replaced the development process. |
+| Tool | How It Was Used |
+|---|---|
+| **Claude (Anthropic)** | Pair-programming assistance for implementing user stories, CSS design, debugging support (type mismatch, duplicate file issue), and README writing |
 
-AI assistance was used to accelerate implementation and debugging, particularly for identifying non-obvious issues like the `parseInt` fix for the level selector and the duplicate `index.js` file problem. Critical reasoning about game logic, timing, and design decisions was done independently first, with AI used to validate and refine those choices.
+AI was used to accelerate implementation and catch non-obvious bugs. All logic was reviewed and understood before being applied — AI supplemented rather than replaced the development process.
 
 ---
 
 ## 📝 Project Summary
 
-- **Simon Says** was built from a provided starter codebase, with all game logic implemented from scratch across five user stories covering HTML structure, game initialization, computer/player turns, and reset functionality. A sixth user story added a kid-friendly visual redesign and a difficulty level selector, giving parents and young players control over game length. The biggest technical challenges were around timing (coordinating `setTimeout` delays for pad sequences) and a subtle type mismatch bug where the dropdown returned string values that broke strict equality checks in `setLevel()`. A file path issue with a duplicate `index.js` caused a persistent browser error that was ultimately traced using the browser's developer console — a valuable real-world debugging experience.
+- **Simon Says** was built from a provided starter codebase, with all game logic implemented across five core user stories covering HTML structure, game initialization, computer/player turns, and reset functionality.
+- A difficulty level selector was added as an originality feature (US-06), surfacing the existing `setLevel()` logic through a kid-friendly dropdown. The biggest technical challenge was a type mismatch where the dropdown returned string values that broke strict equality in `setLevel()`, resolved by parsing with `parseInt()`.
+- A duplicate `index.js` at the repo root caused a persistent `SyntaxError` traced using the browser's developer console — a practical debugging experience reinforcing the importance of verifying exactly which files the browser loads.
