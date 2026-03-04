@@ -233,3 +233,13 @@ AI was used to accelerate implementation and catch non-obvious bugs. All logic w
 - **Simon Says** was built from a provided starter codebase, with all game logic implemented across five core user stories covering HTML structure, game initialization, computer/player turns, and reset functionality.
 - A difficulty level selector was added as an originality feature (US-06), surfacing the existing `setLevel()` logic through a kid-friendly dropdown. The biggest technical challenge was a type mismatch where the dropdown returned string values that broke strict equality in `setLevel()`, resolved by parsing with `parseInt()`.
 - A duplicate `index.js` at the repo root caused a persistent `SyntaxError` traced using the browser's developer console — a practical debugging experience reinforcing the importance of verifying exactly which files the browser loads.
+
+
+## Replit Screenshot
+
+<img width="1882" height="974" alt="Simon Says - Replit Screenshot" src="https://github.com/user-attachments/assets/9be799e6-b03f-47ac-a627-90ec3e91f2e7" />
+
+
+
+
+
